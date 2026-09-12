@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://alofpaca.github.io/alien-alpaca-dev-notes/sitemap.xml
