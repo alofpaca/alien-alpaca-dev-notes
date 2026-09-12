@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Godot 4でUI効果音を組み込むチェックリスト | Alien Alpaca Dev Notes</title>
+  <meta name="description" content="Godot 4へ短いUI効果音を入れるときのファイル仕様、役割分け、import・再生確認を、実際の無料WAVサンプル付きで整理します。">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./">ALIEN ALPACA <span>DEV NOTES</span></a>
+    <a class="shop-link" href="https://alienalpaca.booth.pm/" rel="external">BOOTHを見る</a>
+  </header>
+
+  <main>
+    <article>
+      <p class="eyebrow">GODOT 4 / AUDIO</p>
+      <h1>UI効果音を入れる前に<br>確認したい5項目</h1>
+      <p class="lead">短い効果音でも、形式、役割、音量、再生方法が揃っていないと操作感が崩れます。Godot 4.7.2で実際にimportと再生状態を確認した手順を、2つの無料WAVと一緒にまとめました。</p>
+
+      <section class="sample-panel" aria-labelledby="sample-title">
+        <div>
+          <p class="section-number">FREE SAMPLE</p>
+          <h2 id="sample-title">まず役割差を聞く</h2>
+          <p>決定は短く高め、無効操作は長く低めにしています。音色の好みより先に、操作結果を聞き分けられるか確認します。</p>
+        </div>
+        <div class="sounds">
+          <div class="sound">
+            <div><strong>CONFIRM</strong><span>決定</span></div>
+            <audio controls preload="metadata" src="assets/confirm.wav">音声を再生できません。</audio>
+          </div>
+          <div class="sound">
+            <div><strong>INVALID</strong><span>無効操作</span></div>
+            <audio controls preload="metadata" src="assets/invalid.wav">音声を再生できません。</audio>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-number">01</p>
+        <h2>WAVの仕様を固定する</h2>
+        <p>今回のサンプルは44.1 kHz、16-bit PCM、モノラルです。同じUI群で仕様を揃えると、import設定や音量確認をまとめて行えます。ゲーム全体で別の基準がある場合は、その基準へ統一してください。</p>
+      </section>
+
+      <section>
+        <p class="section-number">02</p>
+        <h2>操作とファイル名を対応させる</h2>
+        <div class="mapping">
+          <code>focus.wav</code><span>選択位置の移動</span>
+          <code>confirm.wav</code><span>決定</span>
+          <code>cancel.wav</code><span>戻る</span>
+          <code>invalid.wav</code><span>実行できない操作</span>
+        </div>
+        <p>実装前に役割表を作ると、同じ音を別の意味で使ってしまう事故を減らせます。</p>
+      </section>
+
+      <section>
+        <p class="section-number">03</p>
+        <h2>AudioStreamPlayerへ割り当てる</h2>
+        <ol>
+          <li>WAVをプロジェクトへ追加し、Godotのimport完了を待つ。</li>
+          <li><code>AudioStreamPlayer</code>を追加して、使うWAVを<code>stream</code>へ設定する。</li>
+          <li>ボタンの<code>pressed</code>やフォーカス移動のシグナルから<code>play()</code>を呼ぶ。</li>
+          <li>連打時の重なり、画面遷移後の再生、ミュート設定を実機で確認する。</li>
+        </ol>
+      </section>
+
+      <section>
+        <p class="section-number">04</p>
+        <h2>検証範囲を分ける</h2>
+        <p>この素材では、全WAVのdecode、長さ、peak、clipping、DC offset、開始・終了境界を機械検査し、Windowsの再生APIとGodot 4.7.2でimport・再生状態を確認しました。Godot側の確認はヘッドレス環境のDummy audio driverです。スピーカーやヘッドホンでの最終的な音量と印象は、作品へ組み込んだ状態で確認する必要があります。</p>
+      </section>
+
+      <section>
+        <p class="section-number">05</p>
+        <h2>再配布条件を確認する</h2>
+        <p>無料サンプルは個人・商用作品への組み込みと加工が可能で、クレジット表記は任意です。音声単体、加工音声、容易に抽出できる素材、素材集としての再配布・再販売は禁止しています。利用前に同梱の条件を確認してください。</p>
+      </section>
+
+      <section class="cta">
+        <p class="section-number">DOWNLOAD</p>
+        <h2>2音を無料で組み込んで確認</h2>
+        <p>BOOTH版にはWAV、README、利用条件が入っています。8音版にはfocus、confirm、cancel、toggle on/off、invalid、success、notificationを収録しています。</p>
+        <div class="actions">
+          <a class="button primary" href="https://alienalpaca.booth.pm/items/8832656" rel="external">無料サンプルを開く</a>
+          <a class="button secondary" href="https://alienalpaca.booth.pm/items/8832372" rel="external">8音セットを見る</a>
+        </div>
+        <p class="disclosure">このページのBOOTHリンクは、自分たちが制作した商品の案内です。現在、第三者商品のアフィリエイトリンクは掲載していません。音声の利用条件は<a href="SAMPLE-TERMS.txt">こちら</a>です。</p>
+      </section>
+    </article>
+  </main>
+
+  <footer>
+    <p>© 2026 Alien Alpaca Dev Notes</p>
+    <p>実測した制作・検証記録を、作品へ組み込みやすい形で公開します。</p>
+  </footer>
+</body>
+</html>
