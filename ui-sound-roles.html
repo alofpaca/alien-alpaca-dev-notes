@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>決定・キャンセル・無効操作のUI音を使い分ける | Alien Alpaca Dev Notes</title>
+  <meta name="description" content="ゲームUIの決定・戻る・無効操作を音でどう区別するか。無料WAVの試聴と、導入時に確認したい項目をまとめました。">
+  <link rel="canonical" href="https://alofpaca.github.io/alien-alpaca-dev-notes/ui-sound-roles.html">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="決定・キャンセル・無効操作のUI音を使い分ける">
+  <meta property="og:description" content="操作結果から音の役割を整理。無料2音を試聴できます。">
+  <meta property="og:url" content="https://alofpaca.github.io/alien-alpaca-dev-notes/ui-sound-roles.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="./">ALIEN ALPACA <span>DEV NOTES</span></a><a class="shop-link" href="https://alienalpaca.booth.pm/">BOOTHを見る</a></header>
+  <main><article>
+    <p class="eyebrow">GAME UI / SOUND DESIGN</p>
+    <h1>操作の結果から<br>UI音を選ぶ</h1>
+    <p class="lead">ボタンを押したとき、操作が通ったのか、画面を戻ったのか、まだ使えないのか。まず三つの結果に分けると、音を割り当てやすくなります。</p>
+    <p class="disclosure">2026年9月12日公開。運営者の自社素材紹介を含みます。</p>
+    <section><p class="section-number">01 / ROLES</p><h2>決定・戻る・無効操作を分ける</h2>
+      <div class="mapping"><code>confirm</code><span>操作を確定した：メニュー決定、設定の確定</span><code>cancel</code><span>操作を取り消した：一つ前の画面へ戻る</span><code>invalid</code><span>今は実行できない：未解放の項目、条件不足</span></div>
+      <p>同じ音をすべてに割り当てると、操作結果の違いが伝わりにくくなる場合があります。画面の変化や説明も残し、音だけに情報を任せないようにします。</p>
+    </section>
+    <section class="sample-panel" aria-labelledby="sample-title"><p class="section-number">02 / FREE SAMPLE</p><h2 id="sample-title">二つの結果を聞き比べる</h2><p>当店の無料版は決定と無効操作の2音です。実際の画面で聞き分けられるか、端末の音量を低めにしてから試してください。キャンセル音は無料版に含みません。</p>
+      <div class="sounds"><div class="sound"><div><strong>CONFIRM</strong><span>決定</span></div><audio controls preload="none" src="assets/confirm.wav">音声を再生できません。</audio></div><div class="sound"><div><strong>INVALID</strong><span>無効操作</span></div><audio controls preload="none" src="assets/invalid.wav">音声を再生できません。</audio></div></div>
+      <p><a class="button secondary" href="https://alofpaca.itch.io/free-game-ui-sounds">無料WAVを入手する</a></p>
+    </section>
+    <section><p class="section-number">03 / CHECK</p><h2>連続操作と音量を確認する</h2><ul><li>フォーカス移動のように頻繁な操作は、連続して使って煩わしくないか確認する。</li><li>BGMやほかの効果音と一緒に鳴らし、操作音だけが突出しないか確認する。</li><li>UI音の音量調整や消音を用意し、視覚でも操作結果が分かるようにする。</li><li>必要な操作にだけ割り当てる。すべての操作に音を付ける必要はない。</li></ul>
+      <p>今回の素材は44.1 kHz・16-bit PCM・モノラルWAVです。Godot 4.7.2で8ファイルのimportと再生状態を確認済みです。使う画面と端末での聞こえ方は、導入後に確認してください。</p><p><a href="./">Godot 4への導入チェックリストを読む →</a></p>
+    </section>
+    <section class="cta"><p class="section-number">NEXT / YOUR UI</p><h2>無料版で、自分の画面に合うか試す</h2><p>無料版はconfirm・invalidの2役。有料版はfocus、confirm、cancel、toggle on/off、invalid、success、notificationの8音です。まず無料版を組み込み、不足する役割があるか確認してください。</p>
+      <div class="actions"><a class="button primary" href="https://alofpaca.itch.io/free-game-ui-sounds">無料2音（itch.io）</a><a class="button secondary" href="https://alienalpaca.booth.pm/items/8832656">無料2音（BOOTH）</a><a class="button secondary" href="https://alienalpaca.booth.pm/items/8832372">8音セット・500円（BOOTH）</a></div>
+      <p>作品への組み込みは商用利用可能、クレジット任意。素材単体の再配布・再販売は禁止です。<a href="SAMPLE-TERMS.txt">無料サンプルの利用条件</a>をご確認ください。</p><p>試した場合は、itch.ioの商品ページのコメントで「使った操作」「聞き分けや音量で困った点」を教えていただけると、改善の材料になります。</p>
+      <p class="disclosure">音声は数学的な合成で制作。コードと文章の作成にAIを利用しています。第三者アフィリエイト広告はありません。</p>
+    </section>
+  </article></main><footer><span>© 2026 Alien Alpaca</span><a href="https://x.com/AlpacaAlien">Xで制作・導入情報を見る</a></footer>
+</body>
+</html>
