@@ -2,6 +2,10 @@
 
 Static source for an evidence-based game-development guide. The first guide documents the actual UI-audio validation performed for UI-AUDIO-01 and includes only the two files distributed in the public free sample.
 
+- Live guide: https://alofpaca.github.io/alien-alpaca-dev-notes/
+- Free two-sound sample: https://alienalpaca.booth.pm/items/8832656
+- Full eight-sound pack: https://alienalpaca.booth.pm/items/8832372
+
 - No analytics or third-party scripts
 - No affiliate links
 - Owned-product links are disclosed on the page
