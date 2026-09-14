@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ja"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="サーバー見積2件の初期費用・初回額・更新額から、契約単位で必要な前払い総額と余る期間を計算。満了日から先行決済日も確認できます。"><link rel="canonical" href="https://alofpaca.github.io/alien-alpaca-dev-notes/server-contract-cost.html"><title>サーバー前払い総額・更新日計算 | Alien Alpaca Dev Notes</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f2f5f9;color:#17243a;font:16px/1.65 system-ui,sans-serif}main{max-width:980px;margin:auto;padding:28px 20px}h1{font-size:clamp(26px,4vw,38px);line-height:1.25}h2{font-size:21px}.badge{color:#725317;font-weight:700}.lead{max-width:740px}section,fieldset{background:white;border:1px solid #d6dfea;border-radius:14px;padding:20px;margin:20px 0}fieldset{margin:0;min-width:0}legend{font-weight:700;padding:0 8px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}label{display:block;font-weight:600;margin:13px 0 5px}input,select{display:block;width:100%;font:inherit;padding:9px;border:1px solid #8b9caf;border-radius:6px}button{background:#244db6;color:white;border:0;border-radius:8px;padding:12px 24px;font:inherit;font-weight:700;cursor:pointer;margin-top:20px}a{color:#244db6}.small{font-size:14px;color:#485970}.result{font-size:26px;font-weight:750}.warn{color:#924916;font-weight:650}output{display:block}ul{padding-left:22px}table{width:100%;border-collapse:collapse}td,th{text-align:left;padding:10px;border-bottom:1px solid #e0e6ef}@media(max-width:640px){.grid{grid-template-columns:1fr}main{padding:20px 14px}section,fieldset{padding:16px}}
+</style>
+<main><div class="badge">料金サンプルは架空 · このページは広告を含みます（PR）</div>
+<h1>使う期間で、いくら払う？</h1>
+<p class="lead">安い「月額相当」だけで決める前に、契約単位で必要な前払い総額を比べます。公式画面の税込額を入力してください。性能や必要メモリのおすすめを決めるツールではありません。</p>
+<form id="form"><section><label for="unit">比較する契約期間の単位</label><select id="unit"><option value="月">月契約どうし</option><option value="日">日数契約どうし</option></select>
+<label for="periods">使いたい期間（選んだ単位）</label><input id="periods" type="number" min="1" max="1200" step="1" value="4" required>
+<p class="small">月と日を換算しません。3日プランと月契約を直接比較できません。途中解約の返金なし・同じ長さの契約を必要回数更新する場合の支払モデルです。</p></section>
+<div class="grid" id="plans"></div><button type="submit">前払い総額を比較</button></form>
+<section id="results" hidden aria-live="polite"></section>
+<section><h2>更新の決済日も確認</h2><p>実際の契約画面の満了日から、決済が先行する日数を引きます。比較の期間計算とは独立した確認です。</p>
+<form id="dateForm"><div class="grid"><div><label for="expiry">契約画面の満了日</label><input id="expiry" type="date" required></div><div><label for="advance">決済が先行する日数</label><input id="advance" type="number" min="0" max="366" step="1" value="7" required></div></div><button type="submit">判断日を確認</button></form><output id="dateResult"></output>
+<p class="small">7日はConoHa長期割引パスの公式例です。他社へ自動適用しません。これは最終安全時刻ではありません。時刻・受付条件を公式で確認し、前日までなど余裕を持って操作してください。期限経過後に取り消せるという保証はありません。</p></section>
+<section><h2>公式条件を確認する</h2><ul><li><a href="https://support.conoha.jp/g/renewal-discountpass/" target="_blank" rel="noopener">ConoHa：満了7日前の自動更新と設定手順</a></li><li><a href="https://game.conoha.jp/pricing/" target="_blank" rel="noopener">ConoHa for GAME：現在の料金</a></li><li><a href="https://vps.xserver.ne.jp/game-server/" target="_blank" rel="noopener">XServer VPS for Game：サービス・料金の確認</a></li><li><a href="https://games.xserver.ne.jp/" target="_blank" rel="noopener">XServer GAMEs：日数契約の確認</a></li></ul><p class="small">確認日：2026-09-14。上の一覧は通常の公式リンクです。下のPR欄はアフィリエイト広告で、申込などの条件を満たすと当サイトが報酬を受け取る場合があります。固定ランキング・最安保証・性能レビューはありません。税・キャンペーン・追加料金は自分の契約画面の額へ反映してください。</p></section>
+<section><h2>PR：サービスの公式案内</h2><p>比較結果とは独立した広告です。料金・受付状態・自動更新条件は公式画面で確認してください。当サイトはこのサービスの性能を実測していません。</p><!-- A8 material 001, registered site: Alien Alpaca Dev Notes; copied unchanged. -->
+<a href="https://px.a8.net/svt/ejp?a8mat=4BCAZD+3B2PRM+CO4+2N9KIA" rel="nofollow">XServer VPS for Game</a>
+
+
+
+<img border="0" width="1" height="1" src="https://www12.a8.net/0.gif?a8mat=4BCAZD+3B2PRM+CO4+2N9KIA" alt="">
+</section><p><a href="server-contract-cost-notes.html">架空例の検算と計算できない条件</a> · <a href="privacy.html">アクセス解析と広告について</a> · <a href="index.html">制作・検証記録</a></p></main>
+<script type="module">
+import {totalCost,decisionDate} from './calculator.mjs';
+import {measure} from './measurement.mjs';
+const $=id=>document.getElementById(id), yen=n=>n.toLocaleString('ja-JP')+'円';
+for (const [id,title,cycle,first,renewal] of [['a','契約A（架空例）',1,900,1200],['b','契約B（架空例）',3,2400,3000]]) {
+ const box=document.createElement('fieldset'); box.innerHTML=`<legend>${title}</legend><label for="${id}cycle">1契約の長さ（選んだ単位）</label><input id="${id}cycle" type="number" min="1" max="1200" step="1" value="${cycle}" required><label for="${id}first">初回1契約の税込前払額（円）</label><input id="${id}first" type="number" min="0" max="1000000000" step="1" value="${first}" required><label for="${id}renewal">更新1契約の税込前払額（円）</label><input id="${id}renewal" type="number" min="0" max="1000000000" step="1" value="${renewal}" required><label for="${id}setup">初期費用（円、最初の1回のみ）</label><input id="${id}setup" type="number" min="0" max="1000000000" step="1" value="0" required>`; $('plans').append(box);
+}
+$('form').addEventListener('submit',event=>{event.preventDefault();const output=$('results');output.hidden=false;
+ try {const rows=['a','b'].map(id=>totalCost({periods:Number($('periods').value),...Object.fromEntries(['cycle','first','renewal','setup'].map(key=>[key,Number($(id+key).value)]))}));
+ const unit=$('unit').value==='月'?'ヶ月':'日';output.innerHTML=`<h2>${$('periods').value}${unit}利用する場合の支払モデル</h2><div class="grid">${rows.map((r,i)=>`<div><h3>契約${i?'B':'A'}</h3><div class="result">${yen(r.total)}</div><p>初回1回＋更新${r.renewals}回<br>購入する契約：${r.blocks}単位<br>利用予定を超える契約期間：${r.unused}${unit}</p></div>`).join('')}</div><p>総額差：${yen(Math.abs(rows[0].total-rows[1].total))}</p><p class="small">返金・初回以外の割引・契約変更・従量料金を含みません。不要な更新は止める必要があります。費用が低くても適合する性能とは限りません。</p>`;
+ measure('tool_usage');
+ }catch(error){output.textContent=error.message;}});
+$('dateForm').addEventListener('submit',event=>{event.preventDefault();try{const date=decisionDate($('expiry').value,Number($('advance').value));const now=new Date();const today=now.getFullYear()+'-'+String(now.getMonth()+1).padStart(2,'0')+'-'+String(now.getDate()).padStart(2,'0');$('dateResult').textContent=`決済予定日の計算例：${date}。`+(date<=today?'当日または過去です。取消可能とは限りません。公式画面で状態を確認してください。':'この日まで待たず、余裕を持って継続の要否を確認してください。');}catch(error){$('dateResult').textContent=error.message;}});
+for(const type of ['input','change']) $('form').addEventListener(type,()=>{$('results').hidden=true;});
+for(const type of ['input','change']) $('dateForm').addEventListener(type,()=>{$('dateResult').textContent='';});
+</script></html>

@@ -6,8 +6,8 @@ Static source for an evidence-based game-development guide. The first guide docu
 - Free two-sound sample: https://alienalpaca.booth.pm/items/8832656
 - Full eight-sound pack: https://alienalpaca.booth.pm/items/8832372
 
-- No analytics or third-party scripts
-- No affiliate links
+- Umami analytics on server-cost tool and validation article; see privacy.html
+- Server-cost tool contains disclosed A8 affiliate material; owned-product guides have no third-party affiliate links
 - Owned-product links are disclosed on the page
 - Audio terms: `SAMPLE-TERMS.txt`
 
