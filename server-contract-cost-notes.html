@@ -1,1 +1,78 @@
-<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>月額相当だけでは分からないサーバー前払い総額の計算 | Alien Alpaca Dev Notes</title><meta name="description" content="架空の2見積で、3ヶ月と4ヶ月の支払順位が変わる例を検算。初回割引、更新額、初期費用、余る契約期間を整理します。"><link rel="canonical" href="https://alofpaca.github.io/alien-alpaca-dev-notes/server-contract-cost-notes.html"><link rel="stylesheet" href="styles.css"></head><body><main><article><p>このページは広告を含む比較ツールの案内です（PR）。</p><h1>サーバーの「月額相当」だけでは、支払全額は分からない</h1><p>これは当店が制作した計算ツールの検算記録です。料金はすべて架空で、実サービスの価格や節約実績ではありません。</p><h2>3ヶ月と4ヶ月で順位が変わる例</h2><p>Aは1ヶ月契約、初回900円・更新1,200円。Bは3ヶ月契約、初回2,400円・更新3,000円とします。初期費用は0円です。</p><table><tr><th>利用予定</th><th>Aの前払い</th><th>Bの前払い</th></tr><tr><td>3ヶ月</td><td>900＋1,200×2＝3,300円</td><td>2,400円</td></tr><tr><td>4ヶ月</td><td>900＋1,200×3＝4,500円</td><td>2,400＋3,000＝5,400円</td></tr></table><p>Bを4ヶ月使うには3ヶ月契約を2回購入するので、6ヶ月分を買い2ヶ月分が余ります。初回の月額相当800円×4＝3,200円とは一致しません。</p><h2>初期費用も含める</h2><p>Aだけ初期費用1,000円なら、4ヶ月総額は5,500円。Bの5,400円との順位が再び逆転します。</p><h2>計算式と対応範囲</h2><p>購入回数＝利用期間÷1契約の期間を切り上げ。総額＝初期費用＋初回額＋（購入回数−1）×更新額。余る期間＝購入回数×契約期間−利用予定期間。</p><p>日数契約どうしも同じ計算ができます。月と日を30日換算して混ぜません。返金・従量制・途中の契約変更・更新後の追加割引には対応しません。税込の最新見積を入力してください。性能や必要メモリは判定しません。</p><h2>更新の操作日は、満了日と一致するとは限らない</h2><p>ConoHa長期割引パスの公式手順では自動更新決済は満了7日前です。満了が2026-10-01なら計算例は2026-09-24。他社に7日を適用せず、契約画面の状態・時刻を確認して余裕を持って判断してください。</p><p><a href="https://support.conoha.jp/g/renewal-discountpass/">ConoHa公式の更新手順</a></p><p><a class="button primary" href="server-contract-cost.html">自分の2見積で総額と更新日を計算する</a></p><p><a href="privacy.html">アクセス解析と広告について</a> · <a href="index.html">制作・検証記録</a></p></article></main><script type="module" src="measurement.mjs"></script></body></html>
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>マイクラサーバーの初期費用・更新料金を含む総額の計算方法 | Alien Alpaca Dev Notes</title>
+<meta name="description" content="架空の2見積で、3ヶ月と4ヶ月の支払順位が変わる例を検算。初回割引、更新額、初期費用、余る契約期間を整理します。">
+<link rel="canonical" href="https://alofpaca.github.io/alien-alpaca-dev-notes/server-contract-cost-notes.html">
+<link rel="stylesheet" href="styles.css">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="article">
+<meta property="og:title" content="マイクラサーバーの初期費用・更新料金込み総額を計算">
+<meta property="og:description" content="3ヶ月契約を4ヶ月使う架空例を検算。公式見積から入力する数字と、満了前の更新確認も整理します。">
+<meta property="og:url" content="https://alofpaca.github.io/alien-alpaca-dev-notes/server-contract-cost-notes.html">
+</head>
+<body>
+<main>
+<article>
+<p>このページは広告を含む比較ツールの案内です（PR）。</p>
+<h1>マイクラサーバーの総額を、初期費用・更新料金込みで比べる</h1>
+<p>これは当店が制作した計算ツールの検算記録です。料金はすべて架空で、実サービスの価格や節約実績ではありません。マイクラなどのゲームサーバーを数ヶ月だけ使う場合でも、長期契約の端数と初回割引後の料金で支払額が変わります。</p>
+<p>
+<a class="button primary" href="server-contract-cost.html">無料ツールで自分の2見積を計算する</a>
+</p>
+<h2>公式見積のどの数字を入力する？</h2>
+<ol>
+<li>同じゲーム・メモリ・オプションなど、比較する条件を揃えます。このツールは動作性能を判定しません。</li>
+<li>初期費用、1回の契約期間、初回の税込支払額、次回更新時の税込支払額を公式の見積・契約画面で確認します。「月額相当」ではなく、その期間に一度に支払う金額を入力します。</li>
+<li>利用予定期間を入力します。月単位同士、日単位同士で比較し、期間の端数を確認します。</li>
+</ol>
+<p>たとえば「3ヶ月契約・月額相当800円」で初回請求が2,400円なら、入力する初回額は2,400円です。割引やオプションの条件が異なる見積は、そのまま同条件の安さとは比べられません。</p>
+<h2>3ヶ月契約を4ヶ月使うと、なぜ総額が増える？</h2>
+<p>Aは1ヶ月契約、初回900円・更新1,200円。Bは3ヶ月契約、初回2,400円・更新3,000円とします。初期費用は0円です。</p>
+<div style="overflow-x:auto">
+<table>
+<tr>
+<th>利用予定</th>
+<th>Aの前払い</th>
+<th>Bの前払い</th>
+</tr>
+<tr>
+<td>3ヶ月</td>
+<td>900＋1,200×2＝3,300円</td>
+<td>2,400円</td>
+</tr>
+<tr>
+<td>4ヶ月</td>
+<td>900＋1,200×3＝4,500円</td>
+<td>2,400＋3,000＝5,400円</td>
+</tr>
+</table>
+</div>
+<p>Bを4ヶ月使うには3ヶ月契約を2回購入するので、6ヶ月分を買い2ヶ月分が余ります。初回の月額相当800円×4＝3,200円とは一致しません。</p>
+<h2>初期費用も含める</h2>
+<p>Aだけ初期費用1,000円なら、4ヶ月総額は5,500円。Bの5,400円との順位が再び逆転します。</p>
+<h2>計算式と対応範囲</h2>
+<p>購入回数＝利用期間÷1契約の期間を切り上げ。総額＝初期費用＋初回額＋（購入回数−1）×更新額。余る期間＝購入回数×契約期間−利用予定期間。</p>
+<p>日数契約どうしも同じ計算ができます。月と日を30日換算して混ぜません。返金・従量制・途中の契約変更・更新後の追加割引には対応しません。税込の最新見積を入力してください。性能や必要メモリは判定しません。</p>
+<h2>更新の操作日は、満了日と一致するとは限らない</h2>
+<p>ConoHa長期割引パスの公式手順では自動更新決済は満了7日前です。満了が2026-10-01なら計算例は2026-09-24。他社に7日を適用せず、契約画面の状態・時刻を確認して余裕を持って判断してください。</p>
+<h2>よくある確認：更新をOFFにすればサーバーも消える？</h2>
+<p>自動更新の停止とサーバー削除は同じ操作とは限りません。ConoHa for GAMEの長期割引パスでは、自動更新をOFFにする際にサーバー削除予約の選択があります。請求停止だけで作業が完了したと思わず、契約画面で削除予約や期限後の状態も確認してください。データのバックアップを先に用意し、操作手順は公式案内を優先します。</p>
+<p class="small">公式更新手順の最終確認：2026-09-14。自動更新ONの場合は満了7日前に決済されます。計算で出た日付は確認の目安で、操作期限の保証ではありません。</p>
+<p>
+<a href="https://support.conoha.jp/g/renewal-discountpass/">ConoHa公式の更新手順</a>
+</p>
+<p>
+<a class="button primary" href="server-contract-cost.html">自分の2見積で総額と更新日を計算する</a>
+</p>
+<p>
+<a href="privacy.html">アクセス解析と広告について</a> · <a href="index.html">制作・検証記録</a>
+</p>
+</article>
+</main>
+<script type="module" src="measurement.mjs">
+</script>
+</body>
+</html>
