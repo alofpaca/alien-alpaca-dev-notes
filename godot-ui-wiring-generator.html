@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Godot 4 UIシグナル配線コード生成 | Alien Alpaca Dev Notes</title>
+  <meta name="description" content="Godot 4のButton、UIフィードバック、AudioStreamPlayerのNodeパスから、focus_entered・focus_exited・pressedを接続するGDScriptと確認手順を無料生成。">
+  <link rel="canonical" href="https://alofpaca.github.io/alien-alpaca-dev-notes/godot-ui-wiring-generator.html">
+  <meta name="analytics-product" content="godot-ui-wiring-01">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Godot 4 UIシグナル配線コード生成">
+  <meta property="og:description" content="Nodeパスを入力して、ボタンのフォーカス・押下・音・視覚フィードバックをつなぐGDScriptを生成。">
+  <meta property="og:url" content="https://alofpaca.github.io/alien-alpaca-dev-notes/godot-ui-wiring-generator.html">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .tool-intro{max-width:700px}.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.tool-card{padding:28px;background:var(--panel);border:2px solid var(--line);box-shadow:8px 8px 0 var(--line)}
+    label{display:block;margin-top:16px;font-weight:800}input,select{width:100%;margin-top:6px;padding:11px 12px;border:2px solid var(--line);border-radius:0;background:#fff;color:var(--ink);font:inherit}
+    .check-row{display:flex;align-items:center;gap:10px;margin-top:18px}.check-row input{width:auto;margin:0}.check-row label{margin:0}.tool-button{margin-top:24px;padding:13px 18px;border:2px solid var(--line);background:var(--signal);color:#fff;font:inherit;font-weight:800;cursor:pointer;box-shadow:4px 4px 0 var(--line)}
+    .tool-button:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--line)}.error{margin-top:16px;padding:12px;border-left:5px solid #b42318;background:#fff0ed;color:#7a271a}.result-panel{margin-top:34px}.result-head{display:flex;justify-content:space-between;align-items:center;gap:16px}.result-head .tool-button{margin:0;background:#fff;color:var(--ink);box-shadow:none}
+    pre{overflow:auto;padding:20px;background:#151922;color:#e8edf4;border:2px solid var(--line);font-size:.88rem;line-height:1.55;tab-size:4}.tree{white-space:pre-wrap;background:#fff;color:var(--ink)}.scope-list{display:grid;grid-template-columns:1fr 1fr;gap:20px}.scope-list>div{padding:20px;background:var(--panel);border:1px solid rgba(18,21,27,.3)}
+    [hidden]{display:none!important}.status{min-height:1.6em;color:var(--muted);font-size:.84rem}.quiet{color:var(--muted);font-size:.88rem}
+    @media(max-width:720px){.tool-grid,.scope-list{grid-template-columns:1fr}.tool-card{padding:22px 18px}.result-head{align-items:flex-start;flex-direction:column}.result-head .tool-button{width:100%}}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="./">ALIEN ALPACA <span>DEV NOTES</span></a>
+    <a class="shop-link" href="godot-button-feedback.html">素材と導入例</a>
+  </header>
+  <main>
+    <article>
+      <p class="eyebrow">FREE WEB TOOL / GODOT 4</p>
+      <h1>UIシグナルの<br>配線コードを生成</h1>
+      <p class="lead tool-intro">Buttonと子ノードのパスを入力すると、キーボード・コントローラーのフォーカス、押下、効果音、視覚フィードバックをつなぐGDScriptを生成します。アドオンやアップロードは不要です。</p>
+      <p class="disclosure">入力内容はこのページ内だけで処理し、保存・送信しません。生成対象はGodot 4.7.2とAlien AlpacaのSelectionFeedback / MenuFeedback APIです。Godot標準のシグナル接続機能を置き換えるものではありません。</p>
+
+      <section aria-labelledby="generator-title">
+        <p class="section-number">01 / GENERATOR</p>
+        <h2 id="generator-title">シーンのNodeパスを入力</h2>
+        <form id="generator-form" class="tool-card" novalidate>
+          <div class="tool-grid">
+            <div>
+              <label for="button-path">Button</label>
+              <input id="button-path" name="button_path" value="UIButton" autocomplete="off" spellcheck="false" aria-describedby="path-note" required>
+              <label for="focus-path">選択フィードバック</label>
+              <input id="focus-path" name="focus_feedback_path" value="UIButton/FocusFeedback" autocomplete="off" spellcheck="false" required>
+              <label for="press-path">押下フィードバック</label>
+              <input id="press-path" name="press_feedback_path" value="UIButton/PressFeedback" autocomplete="off" spellcheck="false" required>
+            </div>
+            <div>
+              <label for="audio-path">AudioStreamPlayer</label>
+              <input id="audio-path" name="audio_player_path" value="UIAudio" autocomplete="off" spellcheck="false" required>
+              <label for="press-kind">押下時の表示</label>
+              <select id="press-kind" name="press_kind">
+                <option value="SUCCESS">成功</option>
+                <option value="INVALID">無効操作</option>
+              </select>
+              <div class="check-row">
+                <input id="reduced-motion" name="reduced_motion_default" type="checkbox">
+                <label for="reduced-motion">初期値を動きを減らす設定にする</label>
+              </div>
+            </div>
+          </div>
+          <p id="path-note" class="quiet">Node名は英字または_で始め、英数字と_を使って「親/子」の形で入力します。スクリプトを付けるControlからの相対パスです。</p>
+          <button class="tool-button" type="submit">GDScriptを生成</button>
+          <div id="errors" class="error" role="alert" hidden></div>
+        </form>
+
+        <div id="result" class="result-panel" hidden aria-live="polite">
+          <div class="result-head">
+            <div><p class="section-number">GENERATED</p><h2>貼り付け用GDScript</h2></div>
+            <button id="copy-code" class="tool-button" type="button">コードをコピー</button>
+          </div>
+          <p id="copy-status" class="status" role="status"></p>
+          <pre><code id="generated-code"></code></pre>
+          <h3>想定するシーン構成</h3>
+          <pre id="generated-tree" class="tree"></pre>
+          <h3>組み込み後の確認</h3>
+          <ol id="generated-checklist"></ol>
+          <p class="quiet">同じシグナルをInspectorや別スクリプトですでに接続している場合は、二重発火を避けるため既存接続を確認してください。Node名を変更したら再生成します。</p>
+        </div>
+      </section>
+
+      <section>
+        <p class="section-number">02 / SCOPE</p>
+        <h2>生成するものと、しないもの</h2>
+        <div class="scope-list">
+          <div><strong>生成する</strong><ul><li>3シグナルの接続</li><li>選択・成功または無効表示</li><li>2種類のAudioStream割当口</li><li>動きを減らす設定とclear関数</li></ul></div>
+          <div><strong>生成しない</strong><ul><li>シーンファイルの自動編集</li><li>入力の成功・失敗判定</li><li>音源や視覚素材そのもの</li><li>Godot 3・他エンジン用コード</li></ul></div>
+        </div>
+        <p>1つのAudioStreamPlayerを共有するため、連続操作では前の音を止めて次の音を再生します。多重再生やミュート設定はアプリ側で設計してください。フォーカス移動にはButton側のfocus_modeとナビゲーション設定も必要です。</p>
+      </section>
+
+      <section class="cta">
+        <p class="section-number">03 / TEST ASSETS</p>
+        <h2>無料素材で配線を確認</h2>
+        <p>生成機能は購入なしで使えます。視覚フィードバックは無料SelectionでAPIを確認でき、音源は無料2音でAudioStreamPlayerへの割当を試せます。成功・無効の3効果版と8音版は各500円です。</p>
+        <div class="actions">
+          <a class="button primary" href="https://alofpaca.itch.io/free-godot-button-feedback" rel="external" data-measure="free-godot-feedback" data-link-kind="owned-free">無料Selection</a>
+          <a class="button secondary" href="https://alienalpaca.booth.pm/items/8832656" rel="external" data-measure="free-ui-audio" data-link-kind="owned-free">無料UI音2種</a>
+          <a class="button secondary" href="https://alienalpaca.booth.pm/items/8836065" rel="external" data-measure="paid-godot-feedback" data-link-kind="owned-paid">3効果・500円</a>
+          <a class="button secondary" href="https://alienalpaca.booth.pm/items/8832372" rel="external" data-measure="paid-ui-audio" data-link-kind="owned-paid">8音・500円</a>
+        </div>
+        <p class="disclosure">上のリンクは自分たちが制作した無料・有料商品の案内です。このページに第三者商品のアフィリエイト広告はありません。</p>
+      </section>
+    </article>
+  </main>
+  <footer><p>© 2026 Alien Alpaca Dev Notes</p><p>実際に検証した構成と制限を公開します。</p></footer>
+  <script type="module">
+    import {defaultConfig,generateWiring,validateConfig} from './godot-ui-wiring-generator.mjs';
+    import {measure} from './measurement.mjs';
+    const form=document.getElementById('generator-form');
+    const resultPanel=document.getElementById('result');
+    const errorPanel=document.getElementById('errors');
+    const codePanel=document.getElementById('generated-code');
+    const treePanel=document.getElementById('generated-tree');
+    const checklistPanel=document.getElementById('generated-checklist');
+    const copyStatus=document.getElementById('copy-status');
+    let currentCode='';
+
+    function readConfig(){
+      const data=new FormData(form);
+      return {...defaultConfig,
+        buttonPath:String(data.get('button_path')||''),
+        focusFeedbackPath:String(data.get('focus_feedback_path')||''),
+        pressFeedbackPath:String(data.get('press_feedback_path')||''),
+        audioPlayerPath:String(data.get('audio_player_path')||''),
+        pressKind:String(data.get('press_kind')||''),
+        reducedMotionDefault:data.get('reduced_motion_default')==='on'
+      };
+    }
+
+    form.addEventListener('submit',event=>{
+      event.preventDefault();
+      copyStatus.textContent='';
+      const config=readConfig();
+      const errors=validateConfig(config);
+      if(errors.length){
+        errorPanel.textContent=errors.join(' ');
+        errorPanel.hidden=false;
+        resultPanel.hidden=true;
+        return;
+      }
+      errorPanel.hidden=true;
+      const generated=generateWiring(config);
+      currentCode=generated.code;
+      codePanel.textContent=generated.code;
+      treePanel.textContent=generated.tree;
+      checklistPanel.replaceChildren(...generated.checklist.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));
+      resultPanel.hidden=false;
+      resultPanel.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth',block:'start'});
+      measure('generate_code',config.pressKind.toLowerCase(),'tool');
+    });
+
+    document.getElementById('copy-code').addEventListener('click',async()=>{
+      if(!currentCode)return;
+      try{
+        await navigator.clipboard.writeText(currentCode);
+        copyStatus.textContent='コードをクリップボードへコピーしました。';
+        measure('copy_code','','tool');
+      }catch{
+        copyStatus.textContent='自動コピーできませんでした。コード欄を選択してコピーしてください。';
+      }
+    });
+  </script>
+</body>
+</html>

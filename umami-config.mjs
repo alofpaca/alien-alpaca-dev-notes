@@ -13,9 +13,10 @@ export function cloudTrack(event,data) {
 export function installCloudTracker(pageId) {
  if(location.hostname!=='alofpaca.github.io') return;
  const validation=new URL(location.href).searchParams.get('validation')==='1'||document.querySelector('meta[name="analytics-validation"]')?.content==='true';
+ const product=document.querySelector('meta[name="analytics-product"]')?.content||'server-cost-01';
  window.serverCostBeforeSend=(type,payload)=>{
   if(localStorage.getItem('umami.disabled')==='1') return false;
-  return {...payload,url:location.pathname,referrer:payload.referrer?new URL(payload.referrer,location.href).origin:'',tag:validation?'validation':'server-cost-01'};
+  return {...payload,url:location.pathname,referrer:payload.referrer?new URL(payload.referrer,location.href).origin:'',tag:validation?'validation':product};
  };
  const script=document.createElement('script');
  script.src='https://cloud.umami.is/script.js';
